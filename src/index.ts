@@ -1,7 +1,21 @@
 import { Hono } from "hono";
+import { logger } from "hono/logger";
+
 import notes from "./routes/notes";
+import { findNote } from "./handlers/notes";
 
-const app = new Hono();
+const app = new Hono().basePath("/api");
 
-app.route("/api", notes);
+// Logger
+app.use("*", logger());
+
+app.route("", notes);
+
+app.get("/search", async (c) => {
+  const query = c.req.query("q");
+  const notes = await findNote(query);
+  if (!notes) return c.json({ message: "Note Not Found!" });
+  return c.json({ notes });
+});
+
 export default app;
