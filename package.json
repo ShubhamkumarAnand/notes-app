@@ -8,7 +8,8 @@
   },
   "dependencies": {
     "@prisma/client": "^5.7.1",
-    "hono": "^3.11.12"
+    "hono": "^3.11.12",
+    "rate-limiter-flexible": "^4.0.0"
   },
   "devDependencies": {
     "bun-types": "^1.0.7",

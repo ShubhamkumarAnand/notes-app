@@ -1,5 +1,6 @@
 import { Hono } from "hono";
 import { logger } from "hono/logger";
+import { RateLimiterMemory } from "rate-limiter-flexible";
 
 import notes from "./routes/notes";
 import { findNote } from "./handlers/notes";
@@ -10,6 +11,28 @@ const app = new Hono().basePath("/api");
 
 // Logger
 app.use("*", logger());
+
+// Rate Limiter
+const rateLimiter = new RateLimiterMemory({
+    points: 100,
+    duration: 100,
+})
+
+app.use('*', async (c, next) => {
+    const ip = c.req.raw.headers.get('x-forwarded-for')
+    if (!ip) {
+        return next()
+    }
+    try {
+        await rateLimiter.consume(ip)
+    } catch (e) {
+        return c.text(
+            'Too many requests',
+            429,
+        )
+    }
+    await next()
+})
 
 // auth middleware
 app.use("/notes/*", async (c, next) => {
