@@ -18,8 +18,8 @@ Your API should implement the following endpoints:
 
 ### Authentication Endpoints
 
-- **POST** _/api/auth/signup_: create a new user account.
-- **POST** _/api/auth/login_: log in to an existing user account and receive an access token.
+- **POST** _/api/auth/sign-up_: create a new user account.
+- **POST** _/api/auth/sign-in_: log in to an existing user account and receive an access token.
 
 ### Note Endpoints
 
