@@ -3,11 +3,14 @@ import { logger } from "hono/logger";
 
 import notes from "./routes/notes";
 import { findNote } from "./handlers/notes";
+import auth from "./routes/auth";
 
 const app = new Hono().basePath("/api");
 
 // Logger
 app.use("*", logger());
+
+app.route("/auth", auth);
 
 app.route("", notes);
 
